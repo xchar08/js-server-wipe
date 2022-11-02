@@ -1,5 +1,8 @@
-const config = require('dotenv');
-const { Client, GatewayIntentBits, EmbedBuilder, PermissionsBitField, Permissions } = require(`discord.js`);
+import { config } from 'dotenv';
+import pkg from 'discord.js';
+const { Client, GatewayIntentBits, EmbedBuilder, PermissionsBitField, Permissions } = pkg;
+
+config();
 
 const client = new Client({
     intents: [
@@ -12,12 +15,11 @@ const client = new Client({
 const BOT_TOKEN = process.env.BOT_TOKEN;
 client.login(BOT_TOKEN);
 
-config();
-
 const prefix = '>';
 
 client.on('ready', () => {
-    console.log("Initialized Connection to Server");
+    console.log("Bot is online!");
+    client.user.setActivity('It works!', {type: "WATCHING"});
 })
 
 client.on("messageCreate", (message) => {
@@ -32,5 +34,8 @@ client.on("messageCreate", (message) => {
 
     if(command === 'test') {
         message.channel.send("Bot is working!");
+    }
+    if(command === 'ping') {
+        message.channel.send("Pong!");
     }
 });
