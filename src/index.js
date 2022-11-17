@@ -49,7 +49,6 @@ client.on("messageCreate", (message) => {
 });
 
 client.on('messageDelete', message => {
-    channelid = '1037039300132470865';
     if(channelid){
         if(!message.partial){
             var channel = client.channels.cache.get(channelid);
@@ -60,8 +59,8 @@ client.on('messageDelete', message => {
                     .setColor(0x0099FF)
                     .setTitle('Deleted Message')
                     .addFields(
-                        { name: 'Author', value: '${message.author.tag} (${message.author.id})'},
-                        { name: 'Channel', value: '${message.channel.name} (${message.channel.id})'}
+                        { name: 'Author', value: `${message.author.tag} (${message.author.id})`, inline: true },
+                        { name: 'Channel', value: `${message.channel.name} (${message.channel.id})`, inline: true}
                     )
                     .setDescription(message.content)
                     .setTimestamp();
