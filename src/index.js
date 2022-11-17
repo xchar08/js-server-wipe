@@ -16,7 +16,7 @@ const BOT_TOKEN = process.env.BOT_TOKEN;
 client.login(BOT_TOKEN);
 
 const prefix = '>';
-let channelid = '';
+var channelid = '';
 
 client.on('ready', () => {
     console.log("Bot is online!");
@@ -52,17 +52,20 @@ client.on('messageDelete', message => {
     channelid = '1037039300132470865';
     if(channelid){
         if(!message.partial){
-            const channel = client.channels.cache.get(channelid);
+            var channel = client.channels.cache.get(channelid);
             message.channel.send("Grabbed channelid");
             if(channel){
                 message.channel.send("Found deleted message.");
                 const embed = new EmbedBuilder()
+                    .setColor(0x0099FF)
                     .setTitle('Deleted Message')
-                    .addFields('Author', '${message.author.tag} (${message.author.id})')
-                    .addFields('Channel', '${message.channel.name} (${message.channel.id})')
+                    .addFields(
+                        { name: 'Author', value: '${message.author.tag} (${message.author.id})'},
+                        { name: 'Channel', value: '${message.channel.name} (${message.channel.id})'}
+                    )
                     .setDescription(message.content)
                     .setTimestamp();
-                channel.send(embed);
+                channel.send({ embeds: [embed] });
             }
         }
     }else{
