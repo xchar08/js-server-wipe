@@ -20,15 +20,14 @@ var channelid = null;
 
 client.on('ready', () => {
     console.log("Bot is online!");
-    client.user.setActivity('It works!', {type: "WATCHING"});
-})
+    client.user.setActivity('server messages 🤡',{type: 'WATCHING'});
+});
 
 client.on("messageCreate", (message) => {
     if(!message.content.startsWith(prefix) || message.author.bot) return;
 
     const args = message.content.slice(prefix.length).split(/ +/);
     const command = args.shift().toLowerCase();
-    
     const messageArray = message.content.split(" ");
     const argument = messageArray.slice(1);
     const cmd = messageArray[0];
@@ -46,20 +45,24 @@ client.on("messageCreate", (message) => {
 client.on('messageDelete', message => {
     if(channelid){
         if(!message.partial){
-            var channel = client.channels.cache.get(channelid);
-            message.channel.send("Grabbed channel ID.");
-            if(channel){
-                message.channel.send("Found deleted message.");
-                const embed = new EmbedBuilder()
-                    .setColor(0x0099FF)
-                    .setTitle('Deleted message.')
-                    .addFields(
-                        { name: 'Author', value: `${message.author.tag} (${message.author.id})`, inline: true },
-                        { name: 'Channel', value: `${message.channel.name} (${message.channel.id})`, inline: true}
-                    )
-                    .setDescription(message.content)
-                    .setTimestamp();
-                channel.send({ embeds: [embed] });
+            if(message.author.id != '1031575267094843504'){
+                var channel = client.channels.cache.get(channelid);
+                message.channel.send("Grabbed channel ID.");
+                if(channel){
+                    message.channel.send("Found deleted message.");
+                    const embed = new EmbedBuilder()
+                        .setColor(0x0099FF)
+                        .setTitle('Deleted message.')
+                        .addFields(
+                            { name: 'Author', value: `${message.author.tag} (${message.author.id})`, inline: true },
+                            { name: 'Channel', value: `${message.channel.name} (${message.channel.id})`, inline: true}
+                        )
+                        .setDescription(message.content)
+                        .setTimestamp();
+                    channel.send({ embeds: [embed] });
+                }
+            }else{
+                message.channel.send("Cannot log bot messages.");
             }
         }
     }else{
