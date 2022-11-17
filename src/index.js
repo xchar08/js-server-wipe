@@ -16,7 +16,7 @@ const BOT_TOKEN = process.env.BOT_TOKEN;
 client.login(BOT_TOKEN);
 
 const prefix = '>';
-var channelid = '';
+var channelid = null;
 
 client.on('ready', () => {
     console.log("Bot is online!");
@@ -33,18 +33,13 @@ client.on("messageCreate", (message) => {
     const argument = messageArray.slice(1);
     const cmd = messageArray[0];
 
-    if(command === 'test') {
-        message.channel.send("Bot is working!");
-    }
     if(command === 'ping') {
         message.channel.send("Pong!");
     }
     if(command === 'setchannel'){
+        message.channel.send("Setting channel...");
         channelid = message.channel.id.toString();
-        message.channel.send(channelid);
-    }
-    if(command === 'currchannel'){
-        message.channel.send(channelid);
+        message.channel.send("Set channel.");
     }
 });
 
@@ -52,12 +47,12 @@ client.on('messageDelete', message => {
     if(channelid){
         if(!message.partial){
             var channel = client.channels.cache.get(channelid);
-            message.channel.send("Grabbed channelid");
+            message.channel.send("Grabbed channel ID.");
             if(channel){
                 message.channel.send("Found deleted message.");
                 const embed = new EmbedBuilder()
                     .setColor(0x0099FF)
-                    .setTitle('Deleted Message')
+                    .setTitle('Deleted message.')
                     .addFields(
                         { name: 'Author', value: `${message.author.tag} (${message.author.id})`, inline: true },
                         { name: 'Channel', value: `${message.channel.name} (${message.channel.id})`, inline: true}
