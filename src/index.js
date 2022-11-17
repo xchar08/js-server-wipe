@@ -1,6 +1,6 @@
 import { config } from 'dotenv';
 import pkg from 'discord.js';
-const { Client, GatewayIntentBits, EmbedBuilder, PermissionsBitField, Permissions } = pkg;
+const { Client, GatewayIntentBits, EmbedBuilder, MessageEmbed, PermissionsBitField, Permissions } = pkg;
 
 config();
 
@@ -16,6 +16,7 @@ const BOT_TOKEN = process.env.BOT_TOKEN;
 client.login(BOT_TOKEN);
 
 const prefix = '>';
+let channelid = 'no id set';
 
 client.on('ready', () => {
     console.log("Bot is online!");
@@ -37,5 +38,33 @@ client.on("messageCreate", (message) => {
     }
     if(command === 'ping') {
         message.channel.send("Pong!");
+    }
+    if(command === 'setchannel'){
+        channelid = message.channel.id;
+        message.channel.send(channelid);
+    }
+    if(command === 'currchannel'){
+        message.channel.send(channelid);
+    }
+});
+
+client.on('messageDelete', message => {
+    if(channelid){
+        if(!message.partial){
+            const channel = client.channels.cache.get(channelid);
+            message.channel.send("Grabbed channelid");
+            if(channel){
+                message.channel.send("Found deleted message.");
+                const embed = new EmbedBuilder()
+                    .setTitle('Deleted Message')
+                    .addFields('Author', '${message.author.tag} (${message.author.id})')
+                    .addFields('Channel', '${message.channel.name} (${message.channel.id})')
+                    .setDescription(message.content)
+                    .setTimestamp();
+                channel.send(embed);
+            }
+        }
+    }else{
+        message.channel.send("No channel is set.");
     }
 });
