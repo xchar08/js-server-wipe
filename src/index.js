@@ -16,7 +16,7 @@ const BOT_TOKEN = process.env.BOT_TOKEN;
 client.login(BOT_TOKEN);
 
 const prefix = '>';
-let channelid = 'no id set';
+let channelid = '';
 
 client.on('ready', () => {
     console.log("Bot is online!");
@@ -40,7 +40,7 @@ client.on("messageCreate", (message) => {
         message.channel.send("Pong!");
     }
     if(command === 'setchannel'){
-        channelid = message.channel.id;
+        channelid = message.channel.id.toString();
         message.channel.send(channelid);
     }
     if(command === 'currchannel'){
@@ -49,6 +49,7 @@ client.on("messageCreate", (message) => {
 });
 
 client.on('messageDelete', message => {
+    channelid = '1037039300132470865';
     if(channelid){
         if(!message.partial){
             const channel = client.channels.cache.get(channelid);
