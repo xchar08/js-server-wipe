@@ -64,7 +64,29 @@ client.on('messageCreate', (message) => {
     }
 
     if(command === 'getrolemap'){
-        message.guild.roles.forEach(role => console.log(role.name, role.id));
+        const channelname = message.channel.name.toString();
+        const channeltopic = message.channel.topic;
+        //message.guild.channels.createChannel
+        /*message.guild.roles.cache.forEach(role => {
+            let rname = role.name;
+            let rid = role.id;
+            let rpermissions = client.channels.cache.get(message.channel.id.toString()).permissionsFor(role).toArray();*/
+
+            /*if(rname != '@everyone'){
+                message.channel.send(rname, rid);
+                rpermissions.forEach(perm => {
+                    message.channel.send(`${perm}`);
+                });
+            }
+            
+        });*/
+        /*message.channel.send("hi");
+        client.channels.cache.get(message.channel.id.toString()).delete();*/
+        client.channels.cache.get(message.channel.id.toString()).clone();
+        client.channels.cache.get(message.channel.id.toString()).delete('making room for new channels')
+            .then(console.log)
+            .catch(console.error);
+        //message.channel.send(rname, rid);
     }
 });
 
