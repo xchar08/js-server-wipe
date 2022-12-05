@@ -21,10 +21,17 @@ client.login(BOT_TOKEN);
 const prefix = '>';
 var channelid = null;
 
-client.on('ready', () => {
-    console.log(`${client.user.tag} is online!`);
-    client.user.setActivity('Server Messages 🤡',{type: 'WATCHING'});
-});
+client.on('ready', (client) => {
+    client.user.setPresence({
+        status: "streaming"
+    });
+ 
+ client.user.setActivity({
+        type: "STREAMING",
+        name: `over ${client.guilds.cache.size} servers.`
+        //url: " " //optional
+     });
+ });
 
 client.on('messageCreate', (message) => {
     if(!message.content.startsWith(prefix) || message.author.bot) return;
@@ -34,7 +41,6 @@ client.on('messageCreate', (message) => {
     const messageArray = message.content.split(" ");
     const argument = messageArray.slice(1);
     const cmd = messageArray[0];
-
     if(command === 'ping') {
         message.channel.send("Pong!");
     }
@@ -56,6 +62,10 @@ client.on('messageCreate', (message) => {
             message.channel.send('there was an error trying to prune messages in this channel!');
         }); 
     }
+
+    if(command === 'getrolemap'){
+        message.guild.roles.forEach(role => console.log(role.name, role.id));
+    }
 });
 
 client.on('messageDelete', (message) => {
@@ -74,7 +84,7 @@ client.on('messageDelete', (message) => {
                     )
                     .setDescription(message.content)
                     .setTimestamp();
-                channel.send({ embeds: [delembed] });
+                message.channel.send({ embeds: [delembed] });
             }
         }
     }else{
